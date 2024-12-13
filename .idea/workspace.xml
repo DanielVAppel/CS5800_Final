@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ab9f75e-af1c-41de-aa86-d77b229509f4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CS5800_Final.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/org/CS5800/ActivityDiagram/ActivityDiagrams.puml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/org/CS5800/ClassDiagram/ClassDiagrams.puml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/org/CS5800/SequenceDiagram/SequenceDiagrams.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/CS5800/ActivityDiagram/ActivityDiagrams.puml" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/CS5800/ActivityDiagram/ActivityDiagrams.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/CS5800/SequenceDiagram/SequenceDiagrams.puml" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/CS5800/SequenceDiagram/SequenceDiagrams.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,9 +26,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2q81r57yCyCy0c8UCX7aqSj5NmZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -48,6 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/vince/IdeaProjects/CS5800_Final",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -73,6 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1734029585414</updated>
       <workItem from="1734029586327" duration="331000" />
+      <workItem from="1734060434385" duration="3417000" />
     </task>
     <servers />
   </component>

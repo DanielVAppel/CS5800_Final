@@ -74,4 +74,32 @@ end fork
 :Results refreshed dynamically;
 stop
 
+' Diagram 6: Friend Request Management
+start
+:User sends friend request;
+:Update database with friend request;
+:Notify recipient about the request;
+if (Recipient accepts?) then (Yes)
+  :Update database with friendship status;
+  :Notify both users about new friend;
+else (No)
+  :Notify sender about rejection;
+endif
+stop
+
+' Diagram 7: Midpoint Calculation for Friends
+start
+:User selects friend for midpoint calculation;
+:Fetch friend’s location from database;
+:Fetch user’s location;
+if (Permissions granted?) then (Yes)
+  :Calculate geographic midpoint;
+  :Make API call to fetch places near midpoint;
+  :Display results;
+else (No)
+  :Show permissions error;
+  :Prompt user to enable location access;
+endif
+stop
+
 @enduml

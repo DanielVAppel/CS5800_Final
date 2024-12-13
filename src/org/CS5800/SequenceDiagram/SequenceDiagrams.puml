@@ -4,26 +4,55 @@
 
 actor User
 boundary App
-control NavigationController
-entity DirectionsAPI
+control AuthenticationController
+entity FirebaseAuth
 
-User -> App : Open navigation feature
-App -> NavigationController : Initialize Navigation Screen
-NavigationController -> DirectionsAPI : Fetch current location
-DirectionsAPI --> NavigationController : Return current location or error
+User -> App : Open login screen
+App -> AuthenticationController : User enters credentials
+AuthenticationController -> FirebaseAuth : Validate credentials
+FirebaseAuth --> AuthenticationController : Return success or failure
 
-alt If location is retrieved
-    NavigationController -> DirectionsAPI : Fetch route to destination
-    DirectionsAPI --> NavigationController : Provide route details
-    NavigationController -> App : Update UI with directions
-else If location is null
-    NavigationController -> App : Display error message
+alt If credentials are valid
+    AuthenticationController -> App : Update UI to logged-in state
+    App --> User : Display user dashboard
+else If credentials are invalid
+    AuthenticationController -> App : Show error message
+    App --> User : Display login error
 end
-
-App --> User : Display navigation results or error
 
 @enduml
 
+@startuml
+
+!pragma teoz true
+
+actor User
+boundary App
+control FriendsController
+entity FirebaseDatabase
+
+User -> App : Open friends list
+App -> FriendsController : Fetch friends data
+FriendsController -> FirebaseDatabase : Retrieve friend list
+FirebaseDatabase --> FriendsController : Return friend list data
+FriendsController -> App : Update UI with friend list
+App --> User : Display friends list
+
+User -> App : Send friend request
+App -> FriendsController : Validate and process request
+FriendsController -> FirebaseDatabase : Update friend requests
+FirebaseDatabase --> FriendsController : Confirm update
+FriendsController -> App : Update UI with pending request
+App --> User : Show friend request sent confirmation
+
+User -> App : Accept friend request
+App -> FriendsController : Process acceptance
+FriendsController -> FirebaseDatabase : Update friendship status
+FirebaseDatabase --> FriendsController : Confirm update
+FriendsController -> App : Update UI with new friend
+App --> User : Show new friend added
+
+@enduml
 
 @startuml
 
@@ -32,12 +61,19 @@ App --> User : Display navigation results or error
 actor User
 boundary App
 control SearchController
+control FriendsController
 entity PlacesAPI
+entity FirebaseDatabase
 
 group User triggers search
-    User -> App : Enter midpoint details
-    App -> SearchController : Validate and process search request
+    User -> App : Enter midpoint details with friend
+    App -> FriendsController : Fetch friend's location
+    FriendsController -> FirebaseDatabase : Retrieve friend's location data
+    FirebaseDatabase --> FriendsController : Return location
+    FriendsController -> App : Provide friend's location
+    App -> SearchController : Process search request
 end
+
 group Fetching nearby places
     SearchController -> PlacesAPI : Query for nearby places
     PlacesAPI --> SearchController : Return list of places
