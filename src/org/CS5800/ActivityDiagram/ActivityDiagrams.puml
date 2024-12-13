@@ -1,0 +1,77 @@
+@startuml
+
+' Diagram 1: User Logging into the App
+start
+:User launches app;
+:App displays login screen;
+if (Existing User?) then (Yes)
+  :User enters credentials;
+  :Validate credentials;
+  if (Valid?) then (Yes)
+    :Navigate to Home Screen;
+  else (No)
+    :Display error message;
+  endif
+else (No)
+  :User selects Sign Up;
+  :Fill registration form;
+  :Submit details;
+  :Account created;
+  :Navigate to Home Screen;
+endif
+stop
+
+' Diagram 2: Fetching Nearby Places Based on Midpoint
+start
+:User sets search radius;
+:Calculate midpoint;
+:Fetch user location;
+if (Permissions granted?) then (Yes)
+  :Fetch coordinates of target location;
+  :Calculate geographic midpoint;
+  :Make API call to fetch nearby places;
+  :Display results;
+else (No)
+  :Show permissions error;
+  :Prompt user to enable location access;
+endif
+stop
+
+' Diagram 3: Navigating to a Selected Place
+start
+:User selects a place from the list;
+:Fetch user location;
+if (Permissions granted?) then (Yes)
+  :Calculate route to destination;
+  :Display directions;
+else (No)
+  :Show permissions error;
+  :Prompt user to enable location access;
+endif
+:User follows displayed route;
+stop
+
+' Diagram 4: Adjusting Search Radius
+start
+:User inputs new radius value;
+if (Valid input?) then (Yes)
+  :Update search radius;
+  :Recalculate results;
+  :Display updated results;
+else (No)
+  :Show error message;
+endif
+stop
+
+' Diagram 5: Observer Pattern - Dynamic Updates
+start
+:User changes search preferences;
+:Notify observer components;
+fork
+  :Update displayed places;
+  :Recalculate midpoint;
+end fork
+:Results refreshed dynamically;
+stop
+
+@enduml

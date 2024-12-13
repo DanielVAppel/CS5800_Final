@@ -1,0 +1,51 @@
+@startuml
+
+!pragma teoz true
+
+actor User
+boundary App
+control NavigationController
+entity DirectionsAPI
+
+User -> App : Open navigation feature
+App -> NavigationController : Initialize Navigation Screen
+NavigationController -> DirectionsAPI : Fetch current location
+DirectionsAPI --> NavigationController : Return current location or error
+
+alt If location is retrieved
+    NavigationController -> DirectionsAPI : Fetch route to destination
+    DirectionsAPI --> NavigationController : Provide route details
+    NavigationController -> App : Update UI with directions
+else If location is null
+    NavigationController -> App : Display error message
+end
+
+App --> User : Display navigation results or error
+
+@enduml
+
+
+@startuml
+
+!pragma teoz true
+
+actor User
+boundary App
+control SearchController
+entity PlacesAPI
+
+group User triggers search
+    User -> App : Enter midpoint details
+    App -> SearchController : Validate and process search request
+end
+group Fetching nearby places
+    SearchController -> PlacesAPI : Query for nearby places
+    PlacesAPI --> SearchController : Return list of places
+end
+
+group Display results
+    SearchController -> App : Update UI with results
+    App --> User : Display search results
+end
+
+@enduml
