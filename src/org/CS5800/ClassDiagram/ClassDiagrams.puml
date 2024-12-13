@@ -1,27 +1,124 @@
 @startuml
-'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+' Diagram: Class Diagram for User Management and Friend Requests
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class User {
+    - userID: String
+    - name: String
+    - email: String
+    - passwordHash: String
+    - location: GeoPoint
+    + authenticate(): boolean
+    + updateLocation(location: GeoPoint): void
+    + sendFriendRequest(friendID: String): void
+    + acceptFriendRequest(requestID: String): void
+    + getFriends(): List<User>
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class FriendRequest {
+    - requestID: String
+    - senderID: String
+    - recipientID: String
+    - status: RequestStatus
+    + approve(): void
+    + reject(): void
 }
+
+enum RequestStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+class FirebaseAuthService {
+    + login(email: String, password: String): boolean
+    + register(user: User): boolean
+    + logout(): void
+}
+
+class FirebaseDatabaseService {
+    + saveUser(user: User): void
+    + getUser(userID: String): User
+    + saveFriendRequest(request: FriendRequest): void
+    + updateFriendRequestStatus(requestID: String, status: RequestStatus): void
+    + getFriends(userID: String): List<User>
+}
+
+class MidpointCalculator {
+    + calculateMidpoint(location1: GeoPoint, location2: GeoPoint): GeoPoint
+}
+
+class Place {
+    - placeID: String
+    - name: String
+    - location: GeoPoint
+    + fetchDetails(): PlaceDetails
+}
+
+class PlacesAPI {
+    + fetchNearbyPlaces(location: GeoPoint, radius: double): List<Place>
+}
+
+class App {
+    + login(email: String, password: String): void
+    + register(user: User): void
+    + searchPlaces(midpoint: GeoPoint, radius: double): List<Place>
+    + sendFriendRequest(userID: String, friendID: String): void
+}
+
+User --|> FirebaseAuthService
+User --> FirebaseDatabaseService
+User --> FriendRequest
+FriendRequest --> RequestStatus
+App --> User
+App --> PlacesAPI
+App --> MidpointCalculator
+FirebaseDatabaseService --|> User
+FirebaseDatabaseService --|> FriendRequest
+PlacesAPI --|> Place
+
+@enduml
+
+@startuml
+
+' Diagram: Class Diagram for Place Search and Midpoint Calculation
+
+class SearchPreferences {
+    - radius: double
+    - filters: List<String>
+    + updateRadius(newRadius: double): void
+    + addFilter(filter: String): void
+    + removeFilter(filter: String): void
+}
+
+class PlaceObserver {
+    + update(placeList: List<Place>): void
+}
+
+class SearchManager {
+    - observers: List<PlaceObserver>
+    - currentSearchPreferences: SearchPreferences
+    + addObserver(observer: PlaceObserver): void
+    + removeObserver(observer: PlaceObserver): void
+    + notifyObservers(): void
+    + executeSearch(location: GeoPoint): List<Place>
+}
+
+class SearchResults {
+    - places: List<Place>
+    + displayResults(): void
+}
+
+class GeoPoint {
+    - latitude: double
+    - longitude: double
+    + getCoordinates(): String
+}
+
+SearchPreferences --> SearchManager
+SearchManager --> PlaceObserver
+SearchManager --> SearchResults
+SearchResults --> Place
+Place --> GeoPoint
 
 @enduml
