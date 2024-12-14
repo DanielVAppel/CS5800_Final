@@ -42,82 +42,47 @@ class FirebaseDatabaseService {
     + saveFriendRequest(request: FriendRequest): void
     + updateFriendRequestStatus(requestID: String, status: RequestStatus): void
     + getFriends(userID: String): List<User>
-    + saveSearchPreference(userID: String, preferences: SearchPreferences): void
-    + getSearchPreference(userID: String): SearchPreferences
 }
 
 class MidpointCalculator {
     + calculateMidpoint(location1: GeoPoint, location2: GeoPoint): GeoPoint
 }
 
-class Place {
+class PlaceInformation {
     - placeID: String
     - name: String
     - location: GeoPoint
-    + fetchDetails(): PlaceDetails
+    + fetchDetails(): PlaceInformationDetails
 }
 
 class PlacesAPI {
-    + fetchNearbyPlaces(location: GeoPoint, radius: double): List<Place>
+    + fetchNearbyPlaces(location: GeoPoint, radius: double): List<PlaceInformation>
 }
 
 class App {
     + login(email: String, password: String): void
     + register(user: User): void
-    + searchPlaces(midpoint: GeoPoint, radius: double): List<Place>
+    + searchPlaces(midpoint: GeoPoint, radius: double): List<PlaceInformation>
     + sendFriendRequest(userID: String, friendID: String): void
 }
 
-class OfflineModeManager {
-    + enableOfflineMode(): void
-    + fetchOfflineData(): List<Place>
-}
-
-class AccessibilityFeatures {
-    + enableVoiceCommand(): void
-    + enableTextToSpeech(): void
-    + adjustContrast(): void
-}
-
-class ReviewRatingsManager {
-    + fetchReviews(placeID: String): List<Review>
-    + fetchRatings(placeID: String): double
-}
-
-class Review {
-    - reviewID: String
-    - content: String
-    - rating: double
-    + getSummary(): String
-}
-
-class NightModeManager {
-    + enableNightMode(): void
-    + disableNightMode(): void
-}
-
 User --|> FirebaseAuthService
-User --> FirebaseDatabaseService
-User --> FriendRequest
+User *-- FriendRequest
+FirebaseDatabaseService o-- User
+FirebaseDatabaseService o-- FriendRequest
 FriendRequest --> RequestStatus
 App --> User
+App o-- MidpointCalculator
 App --> PlacesAPI
-App --> MidpointCalculator
-App --> OfflineModeManager
-App --> AccessibilityFeatures
-App --> ReviewRatingsManager
-App --> NightModeManager
+App --> FirebaseAuthService
 FirebaseDatabaseService --|> User
-FirebaseDatabaseService --|> FriendRequest
-FirebaseDatabaseService --|> SearchPreferences
-PlacesAPI --|> Place
-ReviewRatingsManager --> Review
+PlacesAPI --|> PlaceInformation
 
 @enduml
 
 @startuml
 
-' Diagram: Class Diagram for Place Search and Midpoint Calculation
+' Diagram: Class Diagram for PlaceInformation Search and Midpoint Calculation
 
 class SearchPreferences {
     - radius: double
@@ -127,21 +92,21 @@ class SearchPreferences {
     + removeFilter(filter: String): void
 }
 
-class PlaceObserver {
-    + update(placeList: List<Place>): void
+class PlaceInformationObserver {
+    + update(placeList: List<PlaceInformation>): void
 }
 
 class SearchManager {
-    - observers: List<PlaceObserver>
+    - observers: List<PlaceInformationObserver>
     - currentSearchPreferences: SearchPreferences
-    + addObserver(observer: PlaceObserver): void
-    + removeObserver(observer: PlaceObserver): void
+    + addObserver(observer: PlaceInformationObserver): void
+    + removeObserver(observer: PlaceInformationObserver): void
     + notifyObservers(): void
-    + executeSearch(location: GeoPoint): List<Place>
+    + executeSearch(location: GeoPoint): List<PlaceInformation>
 }
 
 class SearchResults {
-    - places: List<Place>
+    - places: List<PlaceInformation>
     + displayResults(): void
 }
 
@@ -151,10 +116,10 @@ class GeoPoint {
     + getCoordinates(): String
 }
 
-SearchPreferences --> SearchManager
-SearchManager --> PlaceObserver
+SearchPreferences *-- SearchManager
+SearchManager o-- PlaceInformationObserver
 SearchManager --> SearchResults
-SearchResults --> Place
-Place --> GeoPoint
+SearchResults --> PlaceInformation
+PlaceInformation --> GeoPoint
 
 @enduml
